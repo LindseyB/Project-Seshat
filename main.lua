@@ -119,7 +119,8 @@ function match(x, y, clear)
 		if clear then 
 			solved_row[y] = true
 		end
-
+	else
+		match_list = {}
 	end
 
 	-- check for col matches
@@ -151,9 +152,10 @@ function match(x, y, clear)
 		if clear then
 			solved_col[x] = true
 		end
+	else
+		match_list = {}
 	end
 
-	-- clear matched items
 	for i,v in ipairs(match_list) do
 		board[v[1]][v[2]] = math.random(0,7)
 	end
@@ -163,12 +165,12 @@ end
 
 function clear_matches()
 	-- clear out all the matches
-	local matched = true
-	while matched do
+	repeat
+		matched = false
 		for row = 1, width do
 			for col = 1, height do
-				matched = (matched and match(row,col,false))
+				matched = (matched or match(row,col,false))
 			end
 		end
-	end
+	until not matched
 end
