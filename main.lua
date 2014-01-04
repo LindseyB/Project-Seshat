@@ -16,19 +16,11 @@ function love.load()
 		solved_row[row] = false
 		solved_col[row] = false
 		for col = 1, height do
-			board[row][col] = math.random(0,5)
+			board[row][col] = math.random(0,7)
 		end
 	end
 
-	-- clear out all the matches
-	local matched = true
-	while matched do
-		for row = 1, width do
-			for col = 1, height do
-				matched = matched and match(row,col,false)
-			end
-		end
-	end
+	clear_matches()
 end
 
 function love.draw()
@@ -85,8 +77,9 @@ function love.mousepressed(x, y, button)
 		board[picked[1]][picked[2]], board[switch[1]][switch[2]] = board[switch[1]][switch[2]], board[picked[1]][picked[2]]
 		-- verify if switch creates a match otherwise reverse
 		if not match(switch[1],switch[2],true) then
-			print("no match found")
 			board[picked[1]][picked[2]], board[switch[1]][switch[2]] = board[switch[1]][switch[2]], board[picked[1]][picked[2]]
+		else
+			clear_matches()
 		end
 		-- set the picked and switch back to nothing
 		picked = {}
@@ -101,7 +94,7 @@ function match(x, y, clear)
 	-- check for row matches
 
 	-- check left
-	for row = x, width, -1 do
+	for row = x-1, 1, -1 do
 		if board[x][y] == board[row][y] then
 			match_count = match_count + 1
 			table.insert(match_list, {row, y})
@@ -111,7 +104,7 @@ function match(x, y, clear)
 	end
 
 	-- check right
-	for row = x, width do
+	for row = x+1, width do
 		if board[x][y] == board[row][y] then
 			match_count = match_count + 1
 			table.insert(match_list, {row, y})
@@ -120,26 +113,20 @@ function match(x, y, clear)
 		end	
 	end
 
-	print("matched rows", match_count)
-
 	if match_count >= 3 then
 		matched = true
 		-- delete matched the blocks
 		if clear then 
-			solved_row[match_list[1][1]] = true
+			solved_row[y] = true
 		end
-		print("solved row", match_list[1][1])
-		for i,v in ipairs(match_list) do
-			board[v[1]][v[2]] = math.random(0,5)
-		end
+
 	end
 
 	-- check for col matches
-	match_list = {}
 	match_count = 1
 
 	-- check up
-	for col = y, height, -1 do
+	for col = y-1, 1, -1 do
 		if board[x][y] == board[x][col] then
 			match_count = match_count + 1
 			table.insert(match_list, {x, col})
@@ -149,7 +136,7 @@ function match(x, y, clear)
 	end
 
 	-- check down
-	for col = y, height do
+	for col = y+1, height do
 		if board[x][y] == board[x][col] then
 			match_count = match_count + 1
 			table.insert(match_list, {x, col})
@@ -158,17 +145,30 @@ function match(x, y, clear)
 		end
 	end
 
-	print("matched cols", match_count)
-
 	if match_count >= 3 then
 		matched = true
 		-- delete matched the blocks
 		if clear then
-			solved_col[match_list[1][2]] = true
+			solved_col[x] = true
 		end
-		print("solved column", match_list[1][2])
-		for i,v in ipairs(match_list) do
-			board[v[1]][v[2]] = math.random(0,5)
+	end
+
+	-- clear matched items
+	for i,v in ipairs(match_list) do
+		board[v[1]][v[2]] = math.random(0,7)
+	end
+
+	return matched		
+end
+
+function clear_matches()
+	-- clear out all the matches
+	local matched = true
+	while matched do
+		for row = 1, width do
+			for col = 1, height do
+				matched = (matched and match(row,col,false))
+			end
 		end
-	end		
+	end
 end
