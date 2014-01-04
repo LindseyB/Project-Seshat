@@ -65,6 +65,9 @@ function love.mousepressed(x, y, button)
 							(row == picked[1] and col == picked[2]-1) or
 							(row == picked[1] and col == picked[2]+1) then
 								switch = {row, col}
+						else
+							-- it's actually a new pick
+							picked = {row, col}
 						end
 					end
 				end
@@ -119,12 +122,14 @@ function match(x, y, clear)
 		if clear then 
 			solved_row[y] = true
 		end
-	else
-		match_list = {}
+		for i,v in ipairs(match_list) do
+			board[v[1]][v[2]] = math.random(0,7)
+		end
 	end
 
 	-- check for col matches
 	match_count = 1
+	match_list = {}
 
 	-- check up
 	for col = y-1, 1, -1 do
@@ -152,12 +157,9 @@ function match(x, y, clear)
 		if clear then
 			solved_col[x] = true
 		end
-	else
-		match_list = {}
-	end
-
-	for i,v in ipairs(match_list) do
-		board[v[1]][v[2]] = math.random(0,7)
+		for i,v in ipairs(match_list) do
+			board[v[1]][v[2]] = math.random(0,7)
+		end
 	end
 
 	return matched		
@@ -166,10 +168,13 @@ end
 function clear_matches()
 	-- clear out all the matches
 	repeat
-		matched = false
 		for row = 1, width do
 			for col = 1, height do
-				matched = (matched or match(row,col,false))
+				if row == 1 and col == 1 then
+					matched = match(row,col,false)
+				else
+					matched = (matched or match(row,col,false))
+				end
 			end
 		end
 	until not matched
