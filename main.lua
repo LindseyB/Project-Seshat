@@ -4,23 +4,23 @@ function love.load()
 	
 	width = 5
 	height = 5
+	tiles = 5
 
 	board = {}
-	solved_row = {}
-	solved_col = {}
+	solved = {}
 	picked = {}
 	switch = {}
 
 	for row = 1, width do
 		board[row] = {}
-		solved_row[row] = false
-		solved_col[row] = false
+		solved[row] = {}
 		for col = 1, height do
-			board[row][col] = math.random(0,7)
+			solved[row][col] = false
+			board[row][col] = math.random(0,tiles)
 		end
 	end
 
-	clear_matches()
+	clear_matches(false)
 end
 
 function love.draw()
@@ -32,13 +32,7 @@ function love.draw()
 				love.graphics.setColor(255,255,255,255)
 			end
 
-			if solved_row[col] then
-				love.graphics.setColor(0,0,255,255)
-				love.graphics.rectangle("fill", 32*(row-1), 32*(col-1), 32, 32)
-				love.graphics.setColor(255,255,255,255)
-			end
-
-			if solved_col[row] then
+			if solved[row][col] then
 				love.graphics.setColor(0,0,255,255)
 				love.graphics.rectangle("fill", 32*(row-1), 32*(col-1), 32, 32)
 				love.graphics.setColor(255,255,255,255)
@@ -82,7 +76,7 @@ function love.mousepressed(x, y, button)
 		if not match(switch[1],switch[2],true) then
 			board[picked[1]][picked[2]], board[switch[1]][switch[2]] = board[switch[1]][switch[2]], board[picked[1]][picked[2]]
 		else
-			clear_matches()
+			clear_matches(true)
 		end
 		-- set the picked and switch back to nothing
 		picked = {}
@@ -120,10 +114,12 @@ function match(x, y, clear)
 		matched = true
 		-- delete matched the blocks
 		if clear then 
-			solved_row[y] = true
+			for row = 1, width do
+				solved[row][y] = true
+			end
 		end
 		for i,v in ipairs(match_list) do
-			board[v[1]][v[2]] = math.random(0,7)
+			board[v[1]][v[2]] = math.random(0,tiles)
 		end
 	end
 
@@ -155,25 +151,27 @@ function match(x, y, clear)
 		matched = true
 		-- delete matched the blocks
 		if clear then
-			solved_col[x] = true
+			for col = 1, height do
+				solved[x][col] = true
+			end
 		end
 		for i,v in ipairs(match_list) do
-			board[v[1]][v[2]] = math.random(0,7)
+			board[v[1]][v[2]] = math.random(0,tiles)
 		end
 	end
 
 	return matched		
 end
 
-function clear_matches()
+function clear_matches(clear)
 	-- clear out all the matches
 	repeat
 		for row = 1, width do
 			for col = 1, height do
 				if row == 1 and col == 1 then
-					matched = match(row,col,false)
+					matched = match(row,col,clear)
 				else
-					matched = (matched or match(row,col,false))
+					matched = (matched or match(row,col,clear))
 				end
 			end
 		end
