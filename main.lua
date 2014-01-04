@@ -4,7 +4,7 @@ function love.load()
 	
 	width = 5
 	height = 5
-	tiles = 5
+	tiles = 3
 
 	board = {}
 	solved = {}
@@ -41,6 +41,10 @@ function love.draw()
 			love.graphics.rectangle("line", 32*(row-1), 32*(col-1), 32, 32)
 			love.graphics.print(board[row][col], 32*(row-1), 32*(col-1)) 
 		end
+	end
+
+	if win() then
+		love.graphics.print("You Win", 100, 100)
 	end
 end
 
@@ -176,4 +180,16 @@ function clear_matches(clear)
 			end
 		end
 	until not matched
+end
+
+function win()
+	for row = 1, width do
+		for col = 1, height do
+			if not solved[row][col] then
+				return false
+			end
+		end
+	end
+
+	return true
 end
