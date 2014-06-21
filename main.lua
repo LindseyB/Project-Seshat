@@ -15,8 +15,6 @@ function love.update(dt)
 		lucy:move(lucy.Directions.Left, dt)
 	elseif love.keyboard.isDown("right") then
 		lucy:move(lucy.Directions.Right, dt)
-	elseif love.keyboard.isDown("up") then
-		lucy:jump()
 	elseif love.keyboard.isDown("q") then
 		love.event.push('quit')
 	elseif love.keyboard.isDown("return") and game_over then

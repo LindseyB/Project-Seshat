@@ -11,10 +11,10 @@ function Lucy:create()
 	object.x = 300
 	object.y = love.graphics.getHeight()-97
 	object.y_velocity = 0
-	object.speed = 50
-	object.animation = AnimatedSprite:create("sprites/sheet.png", 72, 97, 11, 2)
-	object.gravity = 200
-	object.jump_height = 300
+	object.speed = 80
+	object.animation = AnimatedSprite:create("sprites/protag_walking_sprite_96x96.png", 96, 96, 8, 2)
+	object.gravity = 400
+	object.jump_height = 0
 	object.width = object.animation.width
 	object.height = object.animation.height
 
@@ -67,13 +67,6 @@ function Lucy:move(direction, dt)
 	if self.y < 0 then self.y = 0 end
 end
 
-function Lucy:jump()
-	-- uncomment for normal jumping
-	if self.y_velocity == 0 then
-		self.y_velocity = self.jump_height
-	end
-end
-
 function Lucy:stop()
 	self.animation:set_animation(false)
 end
@@ -84,14 +77,4 @@ end
 
 function Lucy:update(dt)
 	self.animation:update(dt)
-
-	-- handle jump
-	if self.y_velocity ~= 0 then
-		self.y = self.y - self.y_velocity * dt
-		self.y_velocity = self.y_velocity - self.gravity * dt
-		-- stop the jump
-		if self.y > love.graphics.getHeight() - self.height then
-			self.y_velocity = 0
-		end
-	end
 end
