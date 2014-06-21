@@ -11,7 +11,7 @@ function Lucy:create()
 	object.x = 300
 	object.y = love.graphics.getHeight()-97
 	object.y_velocity = 0
-	object.speed = 80
+	object.speed = 120
 	object.animation = AnimatedSprite:create("sprites/protag_walking_sprite_96x96.png", 96, 96, 8, 2)
 	object.gravity = 400
 	object.jump_height = 0
