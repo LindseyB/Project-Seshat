@@ -18,7 +18,7 @@ function love.update(dt)
 	if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
 		lucy:move(lucy.Directions.Left, dt)
 		posX = posX + 1
-		if posX <= (-1 * imageWidth) then posX = 0 end
+		if posX >= imageWidth then posX = 0 end
 	elseif love.keyboard.isDown("right") or love.keyboard.isDown("d") then
 		lucy:move(lucy.Directions.Right, dt)
 		posX = posX - 1
@@ -35,6 +35,7 @@ end
 
 function love.draw()
 	--puzzle:draw()
+	love.graphics.draw(background_Image, posX - imageWidth, 0) -- this is the copy that we draw to the
 	love.graphics.draw(background_Image, posX, 0) -- this is the original image
 	love.graphics.draw(background_Image, posX + imageWidth, 0) -- this is the copy that we draw to the
 
