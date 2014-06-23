@@ -8,15 +8,14 @@ function Lucy:create()
 
 	setmetatable(object, Lucy)
 
-	object.x = 300
-	object.y = love.graphics.getHeight()-97
-	object.y_velocity = 0
+	object.x = 0
+	object.y = love.graphics.getHeight()-96
+	object.absolutex = 0
 	object.speed = 120
 	object.animation = AnimatedSprite:create("sprites/protag_walking_sprite_96x96.png", 96, 96, 8, 2)
-	object.gravity = 400
-	object.jump_height = 0
 	object.width = object.animation.width
 	object.height = object.animation.height
+	object.windowPadding = 100					-- distance away from edge of window
 
 	object.Directions = {
 		["Down"] = 1,
@@ -34,34 +33,26 @@ end
 
 function Lucy:reset()
 	self.x = 300
-	self.y = love.graphics.getHeight()-97
-	self.y_velocity = 0
+	self.y = love.graphics.getHeight()-96
+	self.absolutex = 0
 end
 
 function Lucy:move(direction, dt)
-	if direction == self.Directions.Down then
-		self.y = self.y + self.speed * dt
-		self.animation:set_animation_direction(self.animation.Directions.Down)
-	end
-
 	if direction == self.Directions.Left then
 		self.x = self.x - self.speed * dt
+		self.absolutex = self.absolutex - self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Left)
 	end
 
 	if direction == self.Directions.Right then
 		self.x = self.x + self.speed * dt
+		self.absolutex = self.absolutex + self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Right)
 	end
 
-	if direction == self.Directions.Up then
-		self.y = self.y - self.speed * dt
-		self.animation:set_animation_direction(self.animation.Directions.Up)
-	end
-
 	-- keep the self on the screen
-	if self.x > love.graphics.getWidth() - self.width then self.x = love.graphics.getWidth() - self.width end
-	if self.x < 0 then self.x = 0 end
+	if self.x > love.graphics.getWidth() - self.width - self.windowPadding then self.x = love.graphics.getWidth() - self.width - self.windowPadding end
+	if self.x < self.windowPadding then self.x = self.windowPadding end
 
 	if self.y > love.graphics.getHeight() - self.height then self.y = love.graphics.getHeight() - self.height end
 	if self.y < 0 then self.y = 0 end
