@@ -15,11 +15,11 @@ end
 function love.update(dt)
 	lucy:update(dt)
 
-	if love.keyboard.isDown("left") then
+	if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
 		lucy:move(lucy.Directions.Left, dt)
 		posX = posX + 1
 		if posX <= (-1 * imageWidth) then posX = 0 end
-	elseif love.keyboard.isDown("right") then
+	elseif love.keyboard.isDown("right") or love.keyboard.isDown("d") then
 		lucy:move(lucy.Directions.Right, dt)
 		posX = posX - 1
 		if posX <= (-1 * imageWidth) then posX = 0 end
