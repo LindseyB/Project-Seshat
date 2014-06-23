@@ -8,9 +8,10 @@ function Lucy:create()
 
 	setmetatable(object, Lucy)
 
-	object.x = 0
-	object.y = love.graphics.getHeight()-96
-	object.absolutex = 0
+	object.x = 100
+	-- window height - sprite height - some padding
+	object.y = love.graphics.getHeight() - 96 - 25
+ 	object.absolutex = 0
 	object.speed = 120
 	object.animation = AnimatedSprite:create("sprites/protag_walking_sprite_96x96.png", 96, 96, 8, 2)
 	object.width = object.animation.width
