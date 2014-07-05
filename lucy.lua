@@ -1,4 +1,5 @@
 require "animated_sprite"
+require "background"
 
 Lucy = {}
 Lucy.__index = Lucy
@@ -17,6 +18,7 @@ function Lucy:create()
 	object.width = object.animation.width
 	object.height = object.animation.height
 	object.windowPadding = 100					-- distance away from edge of window
+	object.background = Background:create()
 
 	object.Directions = {
 		["Down"] = 1,
@@ -43,12 +45,14 @@ function Lucy:move(direction, dt)
 		self.x = self.x - self.speed * dt
 		self.absolutex = self.absolutex - self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Left)
+		self.background:move(self.background.Directions.Left)
 	end
 
 	if direction == self.Directions.Right then
 		self.x = self.x + self.speed * dt
 		self.absolutex = self.absolutex + self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Right)
+		self.background:move(self.background.Directions.Right)
 	end
 
 	-- keep the self on the screen
@@ -64,6 +68,7 @@ function Lucy:stop()
 end
 
 function Lucy:draw()
+	self.background:draw()
 	self.animation:draw(self.x, self.y)
 end
 
