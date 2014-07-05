@@ -46,13 +46,24 @@ function Lucy:move(direction, dt)
 		self.absolutex = self.absolutex - self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Left)
 		self.background:move(self.background.Directions.Left)
+
+		if self.x < self.windowPadding then
+			self.background:move(self.background.Directions.Left, 2)
+		else
+			self.background:move(self.background.Directions.Left)
+		end
 	end
 
 	if direction == self.Directions.Right then
 		self.x = self.x + self.speed * dt
 		self.absolutex = self.absolutex + self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Right)
-		self.background:move(self.background.Directions.Right)
+
+		if self.x > love.graphics.getWidth() - self.width - self.windowPadding then
+			self.background:move(self.background.Directions.Right, 2)
+		else
+			self.background:move(self.background.Directions.Right)
+		end
 	end
 
 	-- keep the self on the screen

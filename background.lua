@@ -17,12 +17,13 @@ function Background:create()
 	return object
 end
 
-function Background:move(direction)
+function Background:move(direction, multiplier)
+	multiplier = multiplier or 1
 	if direction == self.Directions.Left then
-		self.x = self.x + 1
+		self.x = self.x + 1 * multiplier
 		if self.x >= self.width then self.x = 0 end
 	else
-		self.x = self.x - 1
+		self.x = self.x - 1 * multiplier
 		if self.x <= (-1 * self.width) then self.x = 0 end
 	end
 end
