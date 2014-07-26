@@ -1,6 +1,7 @@
 require "puzzle"
 require "lucy"
 require "robot"
+require "collision"
 
 
 function love.load()
@@ -17,9 +18,9 @@ function love.update(dt)
 	robot:update(dt)
 
 	if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
-		lucy:move(lucy.Directions.Left, dt)
+		lucy:move(lucy.Directions.Left, dt, robot)
 	elseif love.keyboard.isDown("right") or love.keyboard.isDown("d") then
-		lucy:move(lucy.Directions.Right, dt)
+		lucy:move(lucy.Directions.Right, dt, robot)
 	elseif love.keyboard.isDown("q") then
 		love.event.push('quit')
 	elseif love.keyboard.isDown("return") and game_over then

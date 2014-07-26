@@ -1,5 +1,7 @@
 require "animated_sprite"
 require "background"
+require "collision"
+
 
 Lucy = {}
 Lucy.__index = Lucy
@@ -40,17 +42,24 @@ function Lucy:reset()
 	self.absolutex = 0
 end
 
-function Lucy:move(direction, dt)
+function Lucy:move(direction, dt, objects)
+	original_x = self.x
+	collide = false
+
 	if direction == self.Directions.Left then
 		self.x = self.x - self.speed * dt
 		self.absolutex = self.absolutex - self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Left)
 		self.background:move(self.background.Directions.Left)
 
-		if self.x < self.windowPadding then
-			self.background:move(self.background.Directions.Left, 2)
-		else
-			self.background:move(self.background.Directions.Left)
+		collide = colliding(self, objects)
+
+		if not collide then
+			if self.x < self.windowPadding then
+				self.background:move(self.background.Directions.Left, 2)
+			else
+				self.background:move(self.background.Directions.Left)
+			end
 		end
 	end
 
@@ -59,10 +68,14 @@ function Lucy:move(direction, dt)
 		self.absolutex = self.absolutex + self.speed * dt
 		self.animation:set_animation_direction(self.animation.Directions.Right)
 
-		if self.x > love.graphics.getWidth() - self.width - self.windowPadding then
-			self.background:move(self.background.Directions.Right, 2)
-		else
-			self.background:move(self.background.Directions.Right)
+		collide = colliding(self, objects)
+
+		if not colliding then
+			if self.x > love.graphics.getWidth() - self.width - self.windowPadding then
+				self.background:move(self.background.Directions.Right, 2)
+			else
+				self.background:move(self.background.Directions.Right)
+			end
 		end
 	end
 
@@ -72,6 +85,11 @@ function Lucy:move(direction, dt)
 
 	if self.y > love.graphics.getHeight() - self.height then self.y = love.graphics.getHeight() - self.height end
 	if self.y < 0 then self.y = 0 end
+
+	-- handle collisions
+	if collide then
+		self.x = original_x
+	end
 end
 
 function Lucy:stop()
