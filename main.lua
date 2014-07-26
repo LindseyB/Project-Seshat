@@ -1,8 +1,6 @@
 require "puzzle"
 require "lucy"
 require "robot"
-require "collision"
-
 
 function love.load()
 	--puzzle = Puzzle.create()
