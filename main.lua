@@ -1,5 +1,6 @@
 require "puzzle"
 require "lucy"
+require "robot"
 
 
 function love.load()
@@ -7,10 +8,13 @@ function love.load()
 	--puzzle:load()
 	lucy = Lucy.create()
 	lucy:load()
+	robot = Robot.create()
+	robot:load()
 end
 
 function love.update(dt)
 	lucy:update(dt)
+	robot:update(dt)
 
 	if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
 		lucy:move(lucy.Directions.Left, dt)
@@ -30,6 +34,7 @@ function love.draw()
 	--puzzle:draw()
 
 	lucy:draw()
+	robot:draw()
 end
 
 function love.mousepressed(x, y, button)
