@@ -57,6 +57,7 @@ function Lucy:move(direction, dt, objects)
 		if not collide then
 			if self.x < self.windowPadding then
 				self.background:move(self.background.Directions.Left, 2)
+				-- TODO: figure out how to correctly move the objects when character moves
 				objects.x = objects.x + 1
 			else
 				self.background:move(self.background.Directions.Left)
@@ -74,6 +75,7 @@ function Lucy:move(direction, dt, objects)
 		if not colliding then
 			if self.x > love.graphics.getWidth() - self.width - self.windowPadding then
 				self.background:move(self.background.Directions.Right, 2)
+				-- TODO: figure out how to correctly move the objects when character moves
 				objects.x = objects.x - 1
 			else
 				self.background:move(self.background.Directions.Right)
