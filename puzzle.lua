@@ -36,14 +36,14 @@ end
 function Puzzle:draw()
 	for row = 1, self.width do
 		for col = 1, self.width do
-			if self.picked[1] == row and self.picked[2] == col then
-				love.graphics.setColor(0,255,0,255)
+			if self.solved[row][col] then
+				love.graphics.setColor(0,0,255,255)
 				love.graphics.rectangle("fill", 32*(row-1), 32*(col-1), 32, 32)
 				love.graphics.setColor(255,255,255,255)
 			end
 
-			if self.solved[row][col] then
-				love.graphics.setColor(0,0,255,255)
+			if self.picked[1] == row and self.picked[2] == col then
+				love.graphics.setColor(0,255,0,255)
 				love.graphics.rectangle("fill", 32*(row-1), 32*(col-1), 32, 32)
 				love.graphics.setColor(255,255,255,255)
 			end
