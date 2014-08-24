@@ -18,6 +18,7 @@ function love.update(dt)
 	elseif puzzle:win() then
 		puzzle_mode = false
 		puzzle = nil
+		robot:revive()
 		-- TODO: revive the "fixed" robot and have it follow the main character
 	end
 

@@ -16,10 +16,9 @@ function Robot:create()
 	object.height = object.animation.height
 
 	object.Directions = {
-		["Down"] = 1,
+		["Revive"] = 1,
 		["Left"] = 3,
-		["Right"] = 2,
-		["Up"] = 1
+		["Right"] = 2
 	}
 
 	object.animation:set_animation(false)
@@ -40,5 +39,17 @@ function Robot:draw()
 end
 
 function Robot:update(dt)
-	self.animation:update(dt)
+	-- if reviving we don't want to loop the animation
+	if self.animation.current_animation == self.Directions.Revive
+		and self.animation.current_frame == self.animation.frames then
+		self.animation:set_animation_direction(self.Directions.Right)
+	else
+		self.animation:update(dt)
+	end
+
+end
+
+function Robot:revive()
+	self.animation:set_animation(true)
+	--self.animation.looping = false
 end
